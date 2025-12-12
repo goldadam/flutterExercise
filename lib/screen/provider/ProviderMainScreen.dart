@@ -13,7 +13,7 @@ class ProviderMainScreen extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false, // 디버그 띠 제거
         home: HomeScreen(),
-      )
+      ),
     );
   }
 }
