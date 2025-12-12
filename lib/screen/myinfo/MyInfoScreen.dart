@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_lab/provider/MyInfoModel.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 // 프로필사진 변경시 사진이 갱신되어야 하기 때문에
@@ -29,6 +32,33 @@ class MyInfoScreenState extends State<Myinfoscreen> {
 
   late TextEditingController emailController;
   late TextEditingController phoneController;
+
+  // gallery button callback
+  Future<void> openGallery() async {
+    // image_picker package 사용..
+    ImagePicker picker = ImagePicker();
+    // gallery 목록 화면 뜨고.. 유저가 선택한 이미지의 파일정보가 리턴됨...
+    XFile? image = await picker.pickImage(source: ImageSource.gallery);
+    if (null != image) {
+      // provider 등록, 앱 전체에서 사용할 수 있도록..
+      Provider.of<MyinfoModel>(
+        context,
+        listen: false,
+      ).saveMyInfo(userImage: image.path);
+    }
+  }
+
+  // camera button callback
+  Future<void> openCamera() async {
+    ImagePicker picker = ImagePicker();
+    XFile? image = await picker.pickImage(source: ImageSource.camera);
+    if (null != image) {
+      Provider.of<MyinfoModel>(
+        context,
+        listen: false,
+      ).saveMyInfo(userImage: image.path);
+    }
+  }
 
   // 초기값을 지정하는 것.
   @override
@@ -60,11 +90,14 @@ class MyInfoScreenState extends State<Myinfoscreen> {
     // print('phone:  : $phone');
     // print('photo:  : $userImage');
 
-    // 앱앱 전역의 데이터가 유지되게..
-    Provider.of<MyinfoModel>(
-      context,
-      listen: false,
-    ).saveMyInfo(email: emailController.text, phone: phoneController.text);
+    // 앱의 전역의 데이터가 유지되게..
+    final model = Provider.of<MyinfoModel>(context, listen: false);
+    model.saveMyInfo(email: emailController.text, phone: phoneController.text);
+
+    // 위의 코드로 provider에 의해 상태 데이터가 표시되고
+    // db에도 저장되도록..
+
+    model.insertDB();
     Navigator.pop(context);
   }
 
@@ -112,13 +145,23 @@ class MyInfoScreenState extends State<Myinfoscreen> {
                     child: Container(
                       width: 150,
                       height: 150,
-                      child: Image.asset(model.userImage, fit: BoxFit.cover),
+                      // child: Image.asset(model.userImage, fit: BoxFit.cover),
+                      child: model.userImage.startsWith('assets/')
+                          ? Image.asset(model.userImage, fit: BoxFit.cover)
+                          : Image.file(
+                              File(model.userImage),
+                              fit: BoxFit.cover,
+                            ),
                     ),
                   ),
                   SizedBox(height: 24),
-                  ElevatedButton(onPressed: () {}, child: Text('Gallery App')),
+                  ElevatedButton(onPressed: () {
+                    openGallery();
+                  }, child: Text('Gallery App')),
                   SizedBox(height: 24),
-                  ElevatedButton(onPressed: () {}, child: Text('Camera App')),
+                  ElevatedButton(onPressed: () {
+                    openCamera();
+                  }, child: Text('Camera App')),
                   SizedBox(height: 30),
                   Form(
                     key: formKey,

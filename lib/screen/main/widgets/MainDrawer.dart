@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_lab/provider/MyInfoModel.dart';
 import 'package:provider/provider.dart';
@@ -25,7 +27,12 @@ class Maindrawer extends StatelessWidget {
                       child: Container(
                         width: 40,
                         height: 40,
-                        child: Image.asset(model.userImage, fit: BoxFit.cover),
+                        child: model.userImage.startsWith('assets/')
+                            ? Image.asset(model.userImage, fit: BoxFit.cover)
+                            : Image.file(
+                          File(model.userImage),
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                     SizedBox(height: 10),
