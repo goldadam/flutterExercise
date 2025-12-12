@@ -73,6 +73,13 @@ class Maindrawer extends StatelessWidget {
               Navigator.pushNamed(context, '/bloc');
             },
           ),
+          ListTile(
+            leading: Icon(Icons.blind),
+            title: Text('platform'),
+            onTap: () {
+              Navigator.pushNamed(context, '/platform');
+            },
+          ),
         ],
       ),
     );
