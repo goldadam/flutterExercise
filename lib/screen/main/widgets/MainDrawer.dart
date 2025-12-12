@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../myinfo/MyInfoScreen.dart';
-
 class Maindrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -53,6 +51,13 @@ class Maindrawer extends StatelessWidget {
             title: Text('provider'),
             onTap: () {
               Navigator.pushNamed(context, '/provider');
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.blind),
+            title: Text('bloc'),
+            onTap: () {
+              Navigator.pushNamed(context, '/bloc');
             },
           ),
         ],

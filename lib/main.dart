@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lab/screen/bloc/BlocMainScreen.dart';
 import 'package:flutter_lab/screen/detail/DetailScreen.dart';
 import 'package:flutter_lab/screen/dio/DioTestScreen.dart';
 import 'package:flutter_lab/screen/event/EventScreen.dart';
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
         '/myinfo': (context) => Myinfoscreen(),
         '/dio': (context) => DioTestScreen(),
         '/provider': (context) => ProviderMainScreen(),
+        '/bloc': (context) => BlocMainScreen(),
       },
       // 화면전환 요청을 받았을 때 처리할 로직이 있다고 한다면? if) 무언가 판단해서
       // 처리해야 하거나, 화면 전환시 어떤 데이터가 준비되어야 하거나 등..
